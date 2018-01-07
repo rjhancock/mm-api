@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20180107215608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "servers", force: :cascade do |t|
+    t.integer "port"
+    t.string "ip_address"
+    t.boolean "passworded"
+    t.text "users"
+    t.string "server_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["server_key"], name: "index_servers_on_server_key", unique: true
+  end
 
 end
