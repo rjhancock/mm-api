@@ -8,14 +8,12 @@ RSpec.describe "servers/index", type: :view do
         :ip_address => "Ip Address",
         :passworded => false,
         :users => "MyText",
-        :server_key => "Server Key"
       ),
       Server.create!(
         :port => 2,
         :ip_address => "Ip Address",
         :passworded => false,
         :users => "MyText",
-        :server_key => "Server Key"
       )
     ])
   end
@@ -26,6 +24,5 @@ RSpec.describe "servers/index", type: :view do
     assert_select "tr>td", :text => "Ip Address".to_s, :count => 2
     assert_select "tr>td", :text => false.to_s, :count => 2
     assert_select "tr>td", :text => "MyText".to_s, :count => 2
-    assert_select "tr>td", :text => "Server Key".to_s, :count => 2
   end
 end
