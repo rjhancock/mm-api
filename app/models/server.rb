@@ -18,4 +18,7 @@
 
 class Server < ApplicationRecord
   has_secure_token :server_key
+
+  validates :port, :ip_address, presence: true
+  validates :port, numericality: { only_integer: true, greater_than: 1024 }
 end
