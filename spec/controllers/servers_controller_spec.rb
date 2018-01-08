@@ -28,11 +28,19 @@ RSpec.describe ServersController, type: :controller do
   # Server. As you add validations to Server, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+      port: 2346,
+      passworded: false,
+      users: 'hammer,scjazz,wild79',
+      ip_address: '127.0.0.1',
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+      port: '1F3',
+      users: true,
+    }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -48,29 +56,6 @@ RSpec.describe ServersController, type: :controller do
     end
   end
 
-  describe "GET #show" do
-    it "returns a success response" do
-      server = Server.create! valid_attributes
-      get :show, params: {id: server.to_param}, session: valid_session
-      expect(response).to be_success
-    end
-  end
-
-  describe "GET #new" do
-    it "returns a success response" do
-      get :new, params: {}, session: valid_session
-      expect(response).to be_success
-    end
-  end
-
-  describe "GET #edit" do
-    it "returns a success response" do
-      server = Server.create! valid_attributes
-      get :edit, params: {id: server.to_param}, session: valid_session
-      expect(response).to be_success
-    end
-  end
-
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Server" do
@@ -81,14 +66,14 @@ RSpec.describe ServersController, type: :controller do
 
       it "redirects to the created server" do
         post :create, params: {server: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Server.last)
+        expect(response).to have_http_status(:created)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'new' template)" do
         post :create, params: {server: invalid_attributes}, session: valid_session
-        expect(response).to be_success
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -96,28 +81,24 @@ RSpec.describe ServersController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {
+          users: 'hammer,sckjazz'
+        }
       }
 
       it "updates the requested server" do
         server = Server.create! valid_attributes
-        put :update, params: {id: server.to_param, server: new_attributes}, session: valid_session
+        put :update, params: {id: server.server_key, server: new_attributes}, session: valid_session
         server.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "redirects to the server" do
-        server = Server.create! valid_attributes
-        put :update, params: {id: server.to_param, server: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(server)
+        expect(response).to have_http_status(:ok)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
         server = Server.create! valid_attributes
-        put :update, params: {id: server.to_param, server: invalid_attributes}, session: valid_session
-        expect(response).to be_success
+        put :update, params: {id: server.server_key, server: invalid_attributes}, session: valid_session
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -126,14 +107,14 @@ RSpec.describe ServersController, type: :controller do
     it "destroys the requested server" do
       server = Server.create! valid_attributes
       expect {
-        delete :destroy, params: {id: server.to_param}, session: valid_session
+        delete :destroy, params: {id: server.server_key}, session: valid_session
       }.to change(Server, :count).by(-1)
     end
 
     it "redirects to the servers list" do
       server = Server.create! valid_attributes
-      delete :destroy, params: {id: server.to_param}, session: valid_session
-      expect(response).to redirect_to(servers_url)
+      delete :destroy, params: {id: server.server_key}, session: valid_session
+      expect(response).to have_http_status(:ok)
     end
   end
 
