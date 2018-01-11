@@ -10,6 +10,18 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
+ *= require bootstrap/dist/css/bootstrap.min.css
+ *= require font-awesome/css/font-awesome.min.css
  *= require_tree .
  *= require_self
  */
+
+header {
+  width: 100%;
+  background-color: #4e4e4e;
+  background-image: linear-gradient(to bottom, #4a4a4a, #4e4e4e);
+}
+
+header > div > ul > li > a {
+  background-color: #ccc;
+}

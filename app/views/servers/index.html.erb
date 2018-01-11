@@ -1,28 +1,26 @@
-<p id="notice"><%= notice %></p>
+<h1 class='page-header'>Currently Registered Servers</h1>
 
-<h1>Servers</h1>
-
-<table>
+<table class='table table-striped'>
   <thead>
     <tr>
-      <th>Port</th>
-      <th>Ip address</th>
-      <th>Passworded</th>
-      <th>Users</th>
-      <th>Server key</th>
-      <th colspan="3"></th>
+      <th>IP Address</th>
+      <th>Passworded?</th>
+      <th>MegaMek Version</th>
+      <th>Current Phase</th>
+      <th>Current Users</th>
+      <th>Last Update</th>
     </tr>
   </thead>
 
   <tbody>
     <% @servers.each do |server| %>
       <tr>
-        <td><%= server.port %></td>
-        <td><%= server.ip_address %></td>
-        <td><%= server.passworded %></td>
+        <td><%= "#{server.ip_address}:#{server.port}" %></td>
+        <td><%= server.passworded ? 'Yes' : 'No' %></td>
+        <td><%= server.version %></td>
+        <td><%= server.phase %></td>
         <td><%= server.users %></td>
-        <td><%= server.server_key %></td>
-        <td><%= link_to 'Destroy', server, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= server.updated_at %></td>
       </tr>
     <% end %>
   </tbody>

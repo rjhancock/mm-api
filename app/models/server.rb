@@ -10,6 +10,8 @@
 #  server_key :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  version    :string
+#  phase      :string
 #
 # Indexes
 #
@@ -19,6 +21,6 @@
 class Server < ApplicationRecord
   has_secure_token :server_key
 
-  validates :port, :ip_address, presence: true
+  validates :port, :ip_address, :version, :phase, presence: true
   validates :port, numericality: { only_integer: true, greater_than: 1024 }
 end
