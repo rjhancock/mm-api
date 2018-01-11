@@ -1,4 +1,4 @@
+# Controller for root of app.
 class WelcomeController < ApplicationController
-  def index
-  end
+  def index; end
 end
