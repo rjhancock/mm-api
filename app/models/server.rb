@@ -10,6 +10,8 @@
 #  server_key :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  version    :string
+#  phase      :string
 #
 # Indexes
 #
