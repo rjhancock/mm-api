@@ -33,6 +33,8 @@ RSpec.describe ServersController, type: :controller do
       passworded: false,
       users: 'hammer,scjazz,wild79',
       ip_address: '127.0.0.1',
+      version: '0.43-git',
+      phase: 'Idle',
     }
   }
 

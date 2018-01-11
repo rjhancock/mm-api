@@ -4,16 +4,20 @@ RSpec.describe "servers/index", type: :view do
   before(:each) do
     assign(:servers, [
       Server.create!(
-        :port => 2345,
-        :ip_address => "127.0.0.1",
-        :passworded => false,
-        :users => "MyText",
+        port: 2345,
+        ip_address: "127.0.0.1",
+        passworded: false,
+        users: "MyText",
+        version: '0.43-git',
+        phase: 'Launch',
       ),
       Server.create!(
         :port => 2345,
         :ip_address => "127.0.0.1",
         :passworded => false,
         :users => "MyText",
+        version: '0.43-git',
+        phase: 'Launch',
       )
     ])
   end
