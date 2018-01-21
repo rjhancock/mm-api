@@ -46,3 +46,4 @@ node_modules/
 
 config/database.yml
 config/puma.rb
+config/secrets.yml
