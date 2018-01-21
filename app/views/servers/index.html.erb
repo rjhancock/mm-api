@@ -4,10 +4,10 @@
   <thead>
     <tr>
       <th>IP Address</th>
-      <th>Passworded?</th>
+      <th>Message</th>
       <th>MegaMek Version</th>
       <th>Current Phase</th>
-      <th>Current Users</th>
+      <th>Users Online</th>
       <th>Last Update</th>
     </tr>
   </thead>
@@ -15,8 +15,11 @@
   <tbody>
     <% @servers.each do |server| %>
       <tr>
-        <td><%= "#{server.ip_address}:#{server.port}" %></td>
-        <td><%= server.passworded ? 'Yes' : 'No' %></td>
+        <td>
+          <%= "#{server.ip_address}:#{server.port}" %>
+          <span class='fa <%= server.passworded ? 'fa-lock' : 'fa-unlock' %>' aria-hidden="true"</span>
+        </td>
+        <td><%= server.motd %></td>
         <td><%= server.version %></td>
         <td><%= server.phase %></td>
         <td><%= server.users %></td>
