@@ -1,0 +1,61 @@
+---
+- name: Web App Provision and Deployment
+  hosts: "production_servers"
+  user: deploy
+  serial: 1
+
+  vars_files:
+    - vars/app.yml
+
+  vars:
+    env_base_dir: "{{ install_dir_base }}/{{ app_name }}/{{ dir_name }}"
+    shared_dir: "{{ env_base_dir }}/shared"
+    conf_dir: "{{ shared_dir }}/conf"
+    bundle_dir: "{{ shared_dir }}/bundle"
+    ruby_version: "ruby-2.3"
+    rvm_path: "/usr/local/rvm/bin/rvm {{ ruby_version }} exec"
+
+  tasks:
+  - name: Install build tools
+    apt: pkg=build-essential state=present update_cache=yes
+    become: true
+
+  - name: Install Git
+    apt: pkg=git-core state=present
+    become: true
+
+  - name: Install dependencies
+    apt: pkg={{ item }} state=present
+    with_items:
+      - libxml2-dev
+      - libxslt1-dev
+      - nodejs
+      - yarn
+    become: true
+
+  - name: Install CA Certs
+    apt: pkg=ca-certificates state=present
+    become: true
+
+  - name: Install Bundler
+    gem: name=bundler state=present user_install=no
+    become: true
+
+  - name: Check Latest App Version
+    shell: "git ls-remote {{ git_clone_url }} {{ git_branch }} | egrep -o '^[0-9a-f]+'"
+    register: latest_revision
+
+  - name: Installed App Version
+    shell: "readlink {{ env_base_dir }}/current | egrep -o '([a-f0-9])+$'"
+    register: current_revision
+    ignore_errors: true
+
+  - include_tasks: tasks/deploy.yml
+    when: latest_revision.stdout != current_revision.stdout
+
+  handlers:
+    - name: reload nginx
+      service:
+        name: nginx
+        state: restarted
+      become: true
