@@ -12,6 +12,7 @@
 #  updated_at :datetime         not null
 #  version    :string
 #  phase      :string
+#  motd       :string
 #
 # Indexes
 #

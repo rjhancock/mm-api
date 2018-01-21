@@ -43,3 +43,6 @@ bower.json
 
 # Ignore node_modules
 node_modules/
+
+config/database.yml
+config/puma.rb
