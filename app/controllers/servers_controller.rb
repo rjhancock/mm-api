@@ -38,6 +38,12 @@ class ServersController < ApplicationController
   end
 
   def server_params
-    params.require(:server).permit(:port, :passworded, :users, :version, :phase, :motd)
+    params.require(:server).permit(
+      :port,
+      :passworded,
+      :users,
+      :version,
+      :phase,
+      :motd)
   end
 end
