@@ -44,6 +44,7 @@ class ServersController < ApplicationController
       :users,
       :version,
       :phase,
-      :motd)
+      :motd
+    )
   end
 end
