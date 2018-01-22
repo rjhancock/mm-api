@@ -51,6 +51,9 @@
 - name: Precompile Assets
   shell: "cd {{ env_base_dir }}/releases/{{ latest_revision.stdout }} && {{ rvm_path }} bundle exec rails assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production"
 
+- name: Setup new crontab
+  shell: "cd {{ env_base_dir }}/releases/{{ latest_revision.stdout }} && {{ rvm_path }} bin/whenever --update-crontab {{ server_name }}_{{ rails_env }}"
+
 - name: Link this release to current
   file: src={{ env_base_dir }}/releases/{{ latest_revision.stdout }} dest={{ env_base_dir }}/current state=link
 
