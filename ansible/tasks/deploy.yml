@@ -20,7 +20,7 @@
   file: path={{ env_base_dir }}/releases/{{ latest_revision.stdout }}/log state=directory recurse=yes
 
 - name: Copy SystemD files
-  template: src=templates/{{ item }}.j2 dest=/etc/systemd/system/{{ item }} mode=644
+  template: src=templates/{{ item }}.j2 dest=/etc/systemd/system/{{ item }} mode=0644
   become: true
   with_items:
     - megamek_puma.service
@@ -52,7 +52,7 @@
   shell: "cd {{ env_base_dir }}/releases/{{ latest_revision.stdout }} && {{ rvm_path }} bundle exec rails assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production"
 
 - name: Setup new crontab
-  shell: "cd {{ env_base_dir }}/releases/{{ latest_revision.stdout }} && {{ rvm_path }} bin/whenever --update-crontab {{ server_name }}_{{ rails_env }}"
+  shell: "cd {{ env_base_dir }}/releases/{{ latest_revision.stdout }} && {{ rvm_path }} bundle exec whenever --update-crontab {{ server_name }}_{{ rails_env }}"
 
 - name: Link this release to current
   file: src={{ env_base_dir }}/releases/{{ latest_revision.stdout }} dest={{ env_base_dir }}/current state=link
