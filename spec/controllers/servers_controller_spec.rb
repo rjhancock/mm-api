@@ -31,8 +31,8 @@ RSpec.describe ServersController, type: :controller do
     {
       port: 2346,
       passworded: false,
-      users: 'hammer,scjazz,wild79',
       ip_address: '127.0.0.1',
+      users: 'hammer,scjazz,wild79',
       version: '0.43-git',
       phase: 'Idle',
     }
@@ -68,6 +68,14 @@ RSpec.describe ServersController, type: :controller do
 
       it "redirects to the created server" do
         post :announce, params: valid_attributes, session: valid_session
+        expect(response).to have_http_status(:created)
+      end
+
+      it "updates server with valid params" do
+        server = Server.create! valid_attributes
+        params = valid_attributes
+        params[:key] = server.server_key
+        post :announce, params: params, session: valid_session
         expect(response).to have_http_status(:created)
       end
     end
