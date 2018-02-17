@@ -23,7 +23,7 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe ServersController, type: :controller do
+RSpec.describe Api::V1::ServersController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Server. As you add validations to Server, be sure to
   # adjust the attributes here as well.
@@ -53,30 +53,71 @@ RSpec.describe ServersController, type: :controller do
   describe "GET #index" do
     it "returns a success response" do
       Server.create! valid_attributes
-      get :index, params: {}, session: valid_session
+      get :index, params: {}, session: valid_session, format: :json
       expect(response).to be_success
     end
   end
 
-  describe "POST #announce" do
+  describe "POST #create" do
     context "with valid params" do
       it "creates a new Server" do
         expect {
-          post :announce, params: valid_attributes, session: valid_session
+          post :create, params: {server: valid_attributes}, session: valid_session
         }.to change(Server, :count).by(1)
       end
 
       it "redirects to the created server" do
-        post :announce, params: valid_attributes, session: valid_session
+        post :create, params: {server: valid_attributes}, session: valid_session
         expect(response).to have_http_status(:created)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'new' template)" do
-        post :announce, params: invalid_attributes, session: valid_session
+        post :create, params: {server: invalid_attributes}, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
+
+  describe "PUT #update" do
+    context "with valid params" do
+      let(:new_attributes) {
+        {
+          users: 'hammer,sckjazz'
+        }
+      }
+
+      it "updates the requested server" do
+        server = Server.create! valid_attributes
+        put :update, params: {id: server.server_key, server: new_attributes}, session: valid_session
+        server.reload
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "with invalid params" do
+      it "returns a success response (i.e. to display the 'edit' template)" do
+        server = Server.create! valid_attributes
+        put :update, params: {id: server.server_key, server: invalid_attributes}, session: valid_session
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
+
+  describe "DELETE #destroy" do
+    it "destroys the requested server" do
+      server = Server.create! valid_attributes
+      expect {
+        delete :destroy, params: {id: server.server_key}, session: valid_session
+      }.to change(Server, :count).by(-1)
+    end
+
+    it "redirects to the servers list" do
+      server = Server.create! valid_attributes
+      delete :destroy, params: {id: server.server_key}, session: valid_session
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
 end
