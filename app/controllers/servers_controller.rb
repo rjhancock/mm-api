@@ -4,6 +4,8 @@
 class ServersController < ApplicationController
   include Trackable
 
+  skip_before_action :verify_authenticity_token, only: :announce
+
   # GET /servers
   def index
     render locals: { servers: Server.all }
