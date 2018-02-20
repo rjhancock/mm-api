@@ -3,18 +3,18 @@ class Api::V1::ServersController < Api::ApiController
 
   # GET /servers.json
   def index
-    @servers = Server.all
+    render locals: { servers: Server.all }
   end
 
   # POST /servers.json
   def create
-    @server = Server.new(server_params)
-    @server.ip_address = remote_ip
+    server = Server.new(server_params)
+    server.ip_address = remote_ip
 
-    if @server.save
-      render json: @server, status: :created
+    if server.save
+      render json: server, status: :created
     else
-      render json: @server.errors, status: :unprocessable_entity
+      render json: server.errors, status: :unprocessable_entity
     end
   end
 
@@ -23,7 +23,7 @@ class Api::V1::ServersController < Api::ApiController
     if server.update(server_params)
       head :ok
     else
-      render json: @server.errors, status: :unprocessable_entity
+      render json: server.errors, status: :unprocessable_entity
     end
   end
 
