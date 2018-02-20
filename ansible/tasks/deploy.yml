@@ -39,6 +39,18 @@
     - puma.rb
     - secrets.yml
 
+- name: Copy initializer files
+  template: src=templates/{{ item }} dest={{ init_dir }}/{{item}} mode=0655
+  with_items:
+    - devise.rb
+    - smtp_settings.rb
+
+- name: Link config files
+  file: src={{ init_dir }}/{{ item }} dest={{ env_base_dir }}/releases/{{ latest_revision.stdout }}/config/initializers/{{ item }} state=link
+  with_items:
+    - devise.rb
+    - smtp_settings.rb
+
 - name: Create .bundle dir
   file: path={{ env_base_dir }}/releases/{{ latest_revision.stdout }}/.bundle state=directory recurse=yes
 

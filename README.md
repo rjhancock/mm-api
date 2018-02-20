@@ -4,3 +4,11 @@
 API Service for the MegaMek(https://megamek.org) BattleTech Java game for
 handling various automated functions such as server availability and list
 generation.
+
+## For deployment
+The following files need to be renamed and edited for local use or for server
+deployment by removing the .example.
+
+* ansible/templates/devise.rb.example (deployment)
+* ansible/templates/smtp_settings.rb.example (deployment)
+* config/initializers/devise.rb.example

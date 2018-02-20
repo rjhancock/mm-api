@@ -1,0 +1,11 @@
+Rails.application.config.action_mailer.default_url_options = { host: 'domain.com' }
+
+Rails.application.config.action_mailer.smtp_settings = {
+  address: 'email.example.com',
+  port: 587,
+  authentication: :login,
+  user_name: 'test@example.com',
+  password: 'password',
+  doman: 'example.com',
+  enable_starttls_auto: true,
+}
