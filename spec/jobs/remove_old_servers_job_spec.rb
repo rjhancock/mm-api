@@ -18,10 +18,8 @@ RSpec.describe RemoveOldServersJob, type: :job do
     expect(RemoveOldServersJob.new.queue_name).to eq('default')
   end
 
-  pending 'Need to figure out WHY this wont work'
-#  it 'executes perform' do
-#    expect(Server).to receive(:where)
-#    expect(Server).to receive(:delete_all)
-#    perform_enqueued_jobs { RemoveOldServersJob.perform_now }
-#  end
+  it 'executes perform' do
+    perform_enqueued_jobs { job }
+    assert_performed_jobs 1
+  end
 end
