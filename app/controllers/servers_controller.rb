@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Servers Controller
 # Handles display of Servers table as well as a method to allow current clients
 # to post their server availablility
@@ -32,15 +34,19 @@ class ServersController < ApplicationController
   private
 
   def server_params
-    _params = {
+    {
       ip_address: remote_ip,
       port:       params[:port],
       version:    params[:version],
       phase:      (params[:close].present? ? 'Closed' : 'Lobby'),
       passworded: params[:pw].present?,
+      users:      players_string
     }
+  end
 
-    _params[:users] = params[:players].join(', ') rescue ''
-    _params
+  def players_string
+    params[:players].sort.join(', ')
+  rescue StandardError
+    ''
   end
 end

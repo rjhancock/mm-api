@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Trackable
 # Utility methods for gathering basic data from calls.
 module Trackable
