@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Remove Old Servers Job
 # Removes all servers that haven't been updated in over an hour.
 class RemoveOldServersJob < ApplicationJob

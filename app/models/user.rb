@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: users
@@ -30,6 +31,9 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #
+
+# User
+# General purpose user model extended with devise methods and functions.
 
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
