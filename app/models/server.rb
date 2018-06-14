@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: servers
@@ -19,6 +21,9 @@
 #  index_servers_on_server_key  (server_key) UNIQUE
 #
 
+# Server
+# Server model for storing currently active servers and their relative
+# information.
 class Server < ApplicationRecord
   has_secure_token :server_key
 

@@ -11,6 +11,7 @@
     env_base_dir: "{{ install_dir_base }}/{{ app_name }}/{{ dir_name }}"
     shared_dir: "{{ env_base_dir }}/shared"
     conf_dir: "{{ shared_dir }}/conf"
+    init_dir: "{{ conf_dir }}/initializers"
     bundle_dir: "{{ shared_dir }}/bundle"
     ruby_version: "ruby-2.3"
     rvm_path: "/usr/local/rvm/bin/rvm {{ ruby_version }} exec"

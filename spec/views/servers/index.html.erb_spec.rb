@@ -25,7 +25,7 @@ RSpec.describe "servers/index", type: :view do
   end
 
   it "renders a list of servers" do
-    render
+    render template: 'servers/index', locals: { servers: Server.all }
     assert_select "tr>td", text: "127.0.0.1:2345",    count: 2
     assert_select "tr>td", text: 'Looking for OpFOR', count: 1
     assert_select "tr>td", text: 'Blow shit up',      count: 1

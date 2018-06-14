@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
-  resources :servers, only: [:index, :create, :update, :destroy] do
+  devise_for :users
+
+  namespace :api do
+    namespace :v1 do
+      resources :servers, only: [:index, :create, :update, :destroy]
+    end
+  end
+
+  resources :servers, only: [:index] do
     collection do
       post :announce
     end
