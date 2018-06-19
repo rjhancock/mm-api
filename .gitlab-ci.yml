@@ -41,6 +41,6 @@ megamek:
   stage: test
   script:
     - ./cc-test-reporter before-build
-    - rails db:schema:load
-    - rails spec
+    - bundle exec rails db:schema:load
+    - bundle exec rails spec
     - ./cc-test-reporter after-build -t simplecov
