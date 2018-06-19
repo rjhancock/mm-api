@@ -1,0 +1,41 @@
+image: ruby:2.3
+
+services:
+  - redis:latest
+  - postgres:latest
+
+cache:
+  paths:
+    - vendor/ruby
+    - node_modules
+
+variables:
+  POSTGRES_USER: runner
+  POSTGRES_PASSWORD: ""
+  POSTGRES_DB: MMApi_test
+
+before_script:
+  - curl -sL https://deb.nodesource.com/setup_6.x | bash -
+  - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+  - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+  - apt-get update -q && apt-get install nodejs yarn -yqq
+  - ruby -v
+  - node -v
+  - yarn -v
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - cp config/database.yml.sample config/database.yml
+  - cp config/secrets.yml.example config/secrets.yml
+  - gem install bundler  --no-ri --no-rdoc
+  - bundle install -j $(nproc) --path vendor
+  - bundle clean
+  - bundle audit update
+
+wallace_group:
+  stage: test
+  script:
+    - bundle audit
+    - ./cc-test-reporter before-build
+    - rails db:schema:load
+    - rails spec
+    - ./cc-test-reporter after-build -t simplecov
