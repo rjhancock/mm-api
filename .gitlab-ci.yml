@@ -2,7 +2,7 @@ image: ruby:2.3
 
 services:
   - redis:latest
-  - postgres:alpine
+  - postgres:latest
 
 cache:
   paths:
@@ -43,5 +43,5 @@ megamek:
   script:
     - ./cc-test-reporter before-build
     - bundle exec rails db:schema:load
-    - bundle exec rails spec
+    - bundle exec rspec
     - ./cc-test-reporter after-build -t simplecov

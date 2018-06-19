@@ -1,16 +1,9 @@
-default: &default
+test:
   adapter: postgresql
   encoding: unicode
   pool: 5
   timeout: 5000
-
-development:
-  <<: *default
-  database: MMApi_development
-
-test:
-  <<: *default
-  database: MMApi_test
   host: postgres
   username: runner
   password: ""
+  database: MMApi_test
