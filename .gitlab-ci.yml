@@ -31,7 +31,7 @@ before_script:
   - bundle clean
   - bundle audit update
 
-wallace_group:
+megamek:
   stage: test
   script:
     - bundle audit
