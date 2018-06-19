@@ -29,12 +29,17 @@ before_script:
   - gem install bundler  --no-ri --no-rdoc
   - bundle install -j $(nproc) --path vendor
   - bundle clean
-  - bundle audit update
+
+bundle_audit:
+  stage: test
+  script: |
+    gem install bundler-audit
+    bundle-audit update
+    bundle-audit check
 
 megamek:
   stage: test
   script:
-    - bundle audit
     - ./cc-test-reporter before-build
     - rails db:schema:load
     - rails spec

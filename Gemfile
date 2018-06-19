@@ -21,7 +21,6 @@ gem 'uglifier', '>= 1.3.0'
 gem 'whenever'
 
 group :development, :test do
-  gem 'bundler-audit'
   gem 'capybara', '~> 2.13'
   gem 'rspec-rails'
   gem 'selenium-webdriver'
