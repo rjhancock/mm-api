@@ -31,17 +31,15 @@ before_script:
   - bundle install -j $(nproc) --path vendor
   - bundle clean
 
-bundle_audit:
-  stage: test
-  script: |
-    gem install bundler-audit
-    bundle-audit update
-    bundle-audit check
-
 megamek:
   stage: test
   script:
     - ./cc-test-reporter before-build
     - bundle exec rails db:schema:load
+    - bundle exec rails yarn:install
     - bundle exec rspec
     - ./cc-test-reporter after-build -t simplecov
+  after_script:
+    - gem install bundler-audit
+    - bundle-audit update
+    - bundle-audit check
