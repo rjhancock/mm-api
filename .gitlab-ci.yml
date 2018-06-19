@@ -2,7 +2,7 @@ image: ruby:2.3
 
 services:
   - redis:latest
-  - postgres:latest
+  - postgres:alpine
 
 cache:
   paths:
@@ -24,7 +24,7 @@ before_script:
   - yarn -v
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
-  - cp config/database.yml.sample config/database.yml
+  - cp config/database.yml.gitlab config/database.yml
   - cp config/secrets.yml.example config/secrets.yml
   - cp config/initializers/devise.rb.example config/initializers/devise.rb
   - gem install bundler  --no-ri --no-rdoc
