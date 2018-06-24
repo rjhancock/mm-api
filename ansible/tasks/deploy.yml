@@ -11,6 +11,7 @@
     - "{{ shared_dir }}/log"
     - "{{ shared_dir }}/sockets"
     - "{{ conf_dir }}"
+    - "{{ init_dir }}"
     - "{{ bundle_dir }}"
 
 - name: Pull Code from Git
