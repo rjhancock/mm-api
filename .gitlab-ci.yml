@@ -29,7 +29,6 @@ before_script:
   - cp config/initializers/devise.rb.example config/initializers/devise.rb
   - gem install bundler  --no-ri --no-rdoc
   - bundle install -j $(nproc) --path vendor
-  - bundle clean
 
 megamek:
   stage: test
@@ -39,7 +38,3 @@ megamek:
     - bundle exec rails yarn:install
     - bundle exec rspec
     - ./cc-test-reporter after-build -t simplecov
-  after_script:
-    - gem install bundler-audit
-    - bundle-audit update
-    - bundle-audit check
