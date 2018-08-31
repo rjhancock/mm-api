@@ -7,6 +7,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+ruby '2.3.4'
+
 gem 'rails', '~> 5.2.0'
 
 gem 'bootsnap'
@@ -16,7 +18,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
 gem 'rack-cors', require: 'rack/cors'
-gem 'sass-rails', '~> 5.0'
+gem 'sassc'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'whenever'
