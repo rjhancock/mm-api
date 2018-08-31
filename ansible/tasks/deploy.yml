@@ -20,6 +20,12 @@
 - name: Create Log Direcotry
   file: path={{ env_base_dir }}/releases/{{ latest_revision.stdout }}/log state=directory recurse=yes
 
+- name: Copy Logrotate
+  template: src=templates/{{ item }}.j2 dest=/etc/logrotate.d/{{ item }} mode=0644
+  become: true
+  with_items:
+    - mm_api_logs
+
 - name: Copy SystemD files
   template: src=templates/{{ item }}.j2 dest=/etc/systemd/system/{{ item }} mode=0644
   become: true
