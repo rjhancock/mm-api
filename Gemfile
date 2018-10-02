@@ -15,10 +15,10 @@ gem 'bootsnap'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
 gem 'jbuilder', '~> 2.5'
-gem 'pg', '~> 0.18'
+gem 'pg', '~> 1.0'
 gem 'puma', '~> 3.7'
 gem 'rack-cors', require: 'rack/cors'
-gem 'sassc'
+gem 'sass', '~> 3.5'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'whenever'
@@ -27,7 +27,7 @@ group :development, :test do
   gem 'capybara', '~> 2.13'
   gem 'rspec-rails'
   gem 'selenium-webdriver'
-  gem 'simplecov', require: false, group: :test
+  gem 'simplecov', require: false
 end
 
 group :development do
