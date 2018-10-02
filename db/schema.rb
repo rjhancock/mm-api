@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180220031754) do
+ActiveRecord::Schema.define(version: 2018_10_02_201626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,36 @@ ActiveRecord::Schema.define(version: 20180220031754) do
     t.string "phase"
     t.string "motd"
     t.index ["server_key"], name: "index_servers_on_server_key", unique: true
+  end
+
+  create_table "system_occupation_dates", force: :cascade do |t|
+    t.string "faction"
+    t.date "occupation_start"
+    t.bigint "system_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["system_id"], name: "index_system_occupation_dates_on_system_id"
+  end
+
+  create_table "system_owner_eras", force: :cascade do |t|
+    t.integer "era"
+    t.string "faction"
+    t.bigint "system_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["system_id"], name: "index_system_owner_eras_on_system_id"
+  end
+
+  create_table "systems", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.decimal "coords_x"
+    t.decimal "coords_y"
+    t.string "time_to_jump"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "url"], name: "index_systems_on_name_and_url"
   end
 
   create_table "users", force: :cascade do |t|
@@ -55,4 +85,6 @@ ActiveRecord::Schema.define(version: 20180220031754) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "system_occupation_dates", "systems"
+  add_foreign_key "system_owner_eras", "systems"
 end

@@ -2,7 +2,7 @@
 #
 # Table name: servers
 #
-#  id         :integer          not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  port       :integer
 #  ip_address :string
 #  passworded :boolean
