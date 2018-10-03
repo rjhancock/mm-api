@@ -9,4 +9,12 @@ class ApplicationJob < ActiveJob::Base
     url = "https://isatlas.teamspam.net#{url}" unless !!(url =~ /^http/)
     url
   end
+
+  def text_to_date(date)
+    Date.strptime(cell_text_to_text(date), '%Y-%m-%d') rescue nil
+  end
+
+  def cell_text_to_text(item)
+    item.text.strip.squish rescue item
+  end
 end

@@ -1,22 +1,22 @@
-require 'open-uri'
-
-class CollectSystemsJob < ApplicationJob
+class CollectNovelsJob < ApplicationJob
   queue_as :default
 
   def perform
     loop do
       current_page.search('table/tbody/tr').each do |row|
-        name, x_coord, y_coord, _ = row.search('td')
+        title, author, start_date, end_date = row.search('td')
 
-        new_name = cell_text_to_text(name)
+        new_title   = cell_text_to_text(title)
+        new_author  = cell_text_to_text(author)
 
-        new_system          = System.find_or_create_by(name: new_name)
-        new_system.name     = new_name
-        new_system.coords_x = cell_text_to_text(x_coord)
-        new_system.coords_y = cell_text_to_text(y_coord)
-        new_system.url      = fix_url(name.search('a').first)
-        new_system.save
-        CollectSystemDataJob.perform_later(new_system)
+        novel             = Novel.find_or_create_by(title: new_title)
+        novel.title       = new_title
+        novel.start_date  = text_to_date(start_date)
+        novel.end_date    = text_to_date(end_date)
+        novel.url         = fix_url(title.search('a').first)
+        novel.author      = Author.find_or_create_by(name: new_author)
+        novel.save
+        CollectNovelDataJob.perform_later(novel)
       end
 
       next_page
@@ -27,7 +27,7 @@ class CollectSystemsJob < ApplicationJob
   private
 
   def initial_page
-    raw = open('https://isatlas.teamspam.net/planet.php?func=all').read
+    raw = open('https://isatlas.teamspam.net/novel.php').read
     Nokogiri::HTML.parse(raw)
   end
 

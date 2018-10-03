@@ -21,4 +21,6 @@ class System < ApplicationRecord
   has_many :system_owner_eras, dependent: :destroy
   has_many :system_occupation_dates, dependent: :destroy
   has_many :factories, dependent: :destroy
+  has_many :chapters
+  has_many :books, through: :chapters
 end
