@@ -10,10 +10,115 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180220031754) do
+ActiveRecord::Schema.define(version: 2018_10_03_144356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "authors", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "chapters", force: :cascade do |t|
+    t.string "chapter"
+    t.date "chapter_date"
+    t.bigint "system_id"
+    t.bigint "novel_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["novel_id"], name: "index_chapters_on_novel_id"
+    t.index ["system_id"], name: "index_chapters_on_system_id"
+  end
+
+  create_table "component_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_component_types_on_name"
+  end
+
+  create_table "components", force: :cascade do |t|
+    t.string "name"
+    t.bigint "component_type_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["component_type_id"], name: "index_components_on_component_type_id"
+    t.index ["name", "component_type_id"], name: "index_components_on_name_and_component_type_id"
+  end
+
+  create_table "components_factories", id: false, force: :cascade do |t|
+    t.bigint "component_id"
+    t.bigint "factory_id"
+    t.index ["component_id"], name: "index_components_factories_on_component_id"
+    t.index ["factory_id"], name: "index_components_factories_on_factory_id"
+  end
+
+  create_table "factories", force: :cascade do |t|
+    t.string "name"
+    t.bigint "system_id"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "url"], name: "index_factories_on_name_and_url"
+    t.index ["system_id"], name: "index_factories_on_system_id"
+  end
+
+  create_table "novels", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.bigint "author_id"
+    t.string "series"
+    t.date "prologue_date"
+    t.date "start_date"
+    t.date "end_date"
+    t.date "epilogue_date"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_novels_on_author_id"
+  end
+
+  create_table "publications", force: :cascade do |t|
+    t.integer "stock_number"
+    t.string "isbn"
+    t.integer "year"
+    t.decimal "price"
+    t.bigint "publisher_id"
+    t.bigint "novel_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["novel_id"], name: "index_publications_on_novel_id"
+    t.index ["publisher_id"], name: "index_publications_on_publisher_id"
+  end
+
+  create_table "publishers", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "servers", force: :cascade do |t|
     t.integer "port"
@@ -27,6 +132,36 @@ ActiveRecord::Schema.define(version: 20180220031754) do
     t.string "phase"
     t.string "motd"
     t.index ["server_key"], name: "index_servers_on_server_key", unique: true
+  end
+
+  create_table "system_occupation_dates", force: :cascade do |t|
+    t.string "faction"
+    t.date "occupation_start"
+    t.bigint "system_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["system_id"], name: "index_system_occupation_dates_on_system_id"
+  end
+
+  create_table "system_owner_eras", force: :cascade do |t|
+    t.integer "era"
+    t.string "faction"
+    t.bigint "system_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["system_id"], name: "index_system_owner_eras_on_system_id"
+  end
+
+  create_table "systems", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.decimal "coords_x"
+    t.decimal "coords_y"
+    t.string "time_to_jump"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "url"], name: "index_systems_on_name_and_url"
   end
 
   create_table "users", force: :cascade do |t|
@@ -55,4 +190,8 @@ ActiveRecord::Schema.define(version: 20180220031754) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "components", "component_types"
+  add_foreign_key "factories", "systems"
+  add_foreign_key "system_occupation_dates", "systems"
+  add_foreign_key "system_owner_eras", "systems"
 end
