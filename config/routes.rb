@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
+  concern :paginatable do
+    get '(page/:page)', action: :index, on: :collection, as: ''
+  end
+
   devise_for :users
 
-  namespace :api do
+  namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :servers, only: [:index, :create, :update, :destroy]
+      resources :systems, only: [:index, :show], concerns: :paginatable
     end
   end
 
