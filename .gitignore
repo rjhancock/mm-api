@@ -45,3 +45,4 @@ config/puma.rb
 config/secrets.yml
 public/assets
 /storage
+/exports
