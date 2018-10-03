@@ -16,6 +16,7 @@ class CollectSystemsJob < ApplicationJob
         new_system.coords_y = y_coord.text.strip
         new_system.url      = fix_url(name.search('a').first)
         new_system.save
+        CollectSystemDataJob.perform_later(new_system)
       end
 
       next_page
@@ -53,11 +54,5 @@ class CollectSystemsJob < ApplicationJob
     return unless next_link?
     raw = open(next_link).read
     set_current_page(Nokogiri::HTML.parse(raw))
-  end
-
-  def fix_url(link)
-    url = link['href']
-    url = "https://isatlas.teamspam.net#{url}" unless !!(url =~ /^http/)
-    url
   end
 end
