@@ -12,3 +12,6 @@ deployment by removing the .example.
 * ansible/templates/devise.rb.example (deployment)
 * ansible/templates/smtp_settings.rb.example (deployment)
 * config/initializers/devise.rb.example
+
+## Pow
+If using Pow, use `rvm env . -- --env > .powenv` to correctly assign variables.
