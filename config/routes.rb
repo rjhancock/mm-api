@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   concern :paginatable do
     get '(page/:page)', action: :index, on: :collection, as: ''
@@ -19,6 +21,8 @@ Rails.application.routes.draw do
   end
 
   resources :docs, only: :index
+
+  mount Sidekiq::Web => '/sidekiq'
 
   root 'welcome#index'
 end
