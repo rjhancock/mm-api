@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_03_144356) do
+ActiveRecord::Schema.define(version: 2018_10_15_024045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,15 @@ ActiveRecord::Schema.define(version: 2018_10_03_144356) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name", "url"], name: "index_systems_on_name_and_url"
+  end
+
+  create_table "units", force: :cascade do |t|
+    t.string "title"
+    t.string "source_file_name"
+    t.integer "unit_type", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_units_on_title"
   end
 
   create_table "users", force: :cascade do |t|

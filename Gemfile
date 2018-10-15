@@ -25,10 +25,13 @@ gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'whenever'
 
+# Scraping of Mech Factory
+gem 'capybara', '~> 2.13'
+gem 'chromedriver-helper'
+gem 'selenium-webdriver'
+
 group :development, :test do
-  gem 'capybara', '~> 2.13'
   gem 'rspec-rails'
-  gem 'selenium-webdriver'
   gem 'simplecov', require: false
 end
 
