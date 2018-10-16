@@ -21,5 +21,7 @@
 
 class Factory < ApplicationRecord
   belongs_to :system
+
   has_and_belongs_to_many :components
+  has_and_belongs_to_many :units
 end

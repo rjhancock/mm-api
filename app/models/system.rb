@@ -23,4 +23,6 @@ class System < ApplicationRecord
   has_many :factories, dependent: :destroy
   has_many :chapters
   has_many :books, through: :chapters
+
+  has_and_belongs_to_many :units
 end
