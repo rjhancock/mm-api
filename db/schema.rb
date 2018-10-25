@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_16_025628) do
+ActiveRecord::Schema.define(version: 2018_10_25_185402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,15 @@ ActiveRecord::Schema.define(version: 2018_10_16_025628) do
     t.bigint "factory_id", null: false
     t.bigint "unit_id", null: false
     t.index ["factory_id", "unit_id"], name: "index_factories_units_on_factory_id_and_unit_id", unique: true
+  end
+
+  create_table "gods", force: :cascade do |t|
+    t.string "name"
+    t.integer "popularity"
+    t.string "pantheon"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "novels", force: :cascade do |t|

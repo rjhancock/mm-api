@@ -46,3 +46,4 @@ config/secrets.yml
 public/assets
 /storage
 /exports
+/config/master.key
