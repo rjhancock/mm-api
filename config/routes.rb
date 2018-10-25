@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+      resources :gods, only: [:index], concerns: :paginatable
       resources :servers, only: [:index, :create, :update, :destroy]
       resources :systems, only: [:index, :show], concerns: :paginatable
     end
