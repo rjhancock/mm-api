@@ -22,6 +22,8 @@ class CollectSystemsJob < ApplicationJob
       next_page
       break unless next_link?
     end
+
+    CollectNovelsJob.perform_later
   end
 
   private

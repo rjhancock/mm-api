@@ -62,19 +62,19 @@ RSpec.describe Api::V1::ServersController, type: :controller do
     context "with valid params" do
       it "creates a new Server" do
         expect {
-          post :create, params: {server: valid_attributes}, session: valid_session
+          post :create, params: { server: valid_attributes }, session: valid_session
         }.to change(Server, :count).by(1)
       end
 
       it "redirects to the created server" do
-        post :create, params: {server: valid_attributes}, session: valid_session
+        post :create, params: { server: valid_attributes }, session: valid_session
         expect(response).to have_http_status(:created)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'new' template)" do
-        post :create, params: {server: invalid_attributes}, session: valid_session
+        post :create, params: { server: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -99,7 +99,7 @@ RSpec.describe Api::V1::ServersController, type: :controller do
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
         server = Server.create! valid_attributes
-        put :update, params: {id: server.server_key, server: invalid_attributes}, session: valid_session
+        put :update, params: { id: server.server_key, server: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -109,13 +109,13 @@ RSpec.describe Api::V1::ServersController, type: :controller do
     it "destroys the requested server" do
       server = Server.create! valid_attributes
       expect {
-        delete :destroy, params: {id: server.server_key}, session: valid_session
+        delete :destroy, params: { id: server.server_key }, session: valid_session
       }.to change(Server, :count).by(-1)
     end
 
     it "redirects to the servers list" do
       server = Server.create! valid_attributes
-      delete :destroy, params: {id: server.server_key}, session: valid_session
+      delete :destroy, params: { id: server.server_key }, session: valid_session
       expect(response).to have_http_status(:ok)
     end
   end
