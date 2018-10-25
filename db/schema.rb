@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_03_144356) do
+ActiveRecord::Schema.define(version: 2018_10_25_185402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,21 @@ ActiveRecord::Schema.define(version: 2018_10_03_144356) do
     t.datetime "updated_at", null: false
     t.index ["name", "url"], name: "index_factories_on_name_and_url"
     t.index ["system_id"], name: "index_factories_on_system_id"
+  end
+
+  create_table "factories_units", id: false, force: :cascade do |t|
+    t.bigint "factory_id", null: false
+    t.bigint "unit_id", null: false
+    t.index ["factory_id", "unit_id"], name: "index_factories_units_on_factory_id_and_unit_id", unique: true
+  end
+
+  create_table "gods", force: :cascade do |t|
+    t.string "name"
+    t.integer "popularity"
+    t.string "pantheon"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "novels", force: :cascade do |t|
@@ -162,6 +177,42 @@ ActiveRecord::Schema.define(version: 2018_10_03_144356) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name", "url"], name: "index_systems_on_name_and_url"
+  end
+
+  create_table "systems_units", id: false, force: :cascade do |t|
+    t.bigint "system_id", null: false
+    t.bigint "unit_id", null: false
+    t.index ["system_id", "unit_id"], name: "index_systems_units_on_system_id_and_unit_id", unique: true
+  end
+
+  create_table "units", force: :cascade do |t|
+    t.string "title"
+    t.string "source_file_name"
+    t.integer "unit_type", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "appearance"
+    t.string "armament"
+    t.string "armor_type"
+    t.string "available"
+    t.string "communication_system"
+    t.string "config"
+    t.string "cruise_speed"
+    t.string "jump_jets"
+    t.string "maximum_speed"
+    t.string "power_plant"
+    t.string "rules"
+    t.string "source"
+    t.string "targeting_tracking_system"
+    t.string "tech_level"
+    t.string "tonnage"
+    t.string "used_by"
+    t.text "overview"
+    t.text "capabilites"
+    t.text "deployment"
+    t.text "notable_units"
+    t.text "mechwarrior_rules"
+    t.index ["title"], name: "index_units_on_title"
   end
 
   create_table "users", force: :cascade do |t|
