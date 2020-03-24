@@ -43,6 +43,7 @@ class CollectSystemsJob < ApplicationJob
     ul = current_page.search('ul.pagination').first
     li = ul.search('li').last
     return nil if (li['class'] == 'disabled')
+
     fix_url(li.search('a').first)
   end
 
@@ -52,6 +53,7 @@ class CollectSystemsJob < ApplicationJob
 
   def next_page
     return unless next_link?
+
     raw = open(next_link).read
     set_current_page(Nokogiri::HTML.parse(raw))
   end

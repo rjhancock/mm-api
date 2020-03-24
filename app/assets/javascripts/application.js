@@ -10,9 +10,28 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require rails-ujs
-//= require turbolinks
-//= require jquery/dist/jquery.min
-//= require popper.js/dist/popper
-//= require bootstrap/dist/js/bootstrap.min
 //= require_tree .
+
+
+var xmlhttp;
+
+function loadXMLDoc() {
+  if (xmlhttp == null) { xmlhttp = new XMLHttpRequest(); }
+
+  serversHTML = document.getElementById("servers");
+
+  if (serversHTML == null) {
+    return;
+  }
+
+  xmlhttp.onreadystatechange = function () {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      document.getElementById("servers").innerHTML = xmlhttp.responseText;
+    }
+  };
+
+  xmlhttp.open("GET", "https://api.megamek.org/servers.js", true);
+  xmlhttp.send();
+}
+
+setInterval(function () { loadXMLDoc(); }, 1000);

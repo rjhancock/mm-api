@@ -15,17 +15,8 @@ class ServersController < ApplicationController
 
   # POST /servers/announce
   def announce
-    key = params[:key]
-
-    if Server.exists?(server_key: key)
-      server = Server.where(server_key: key).first
-      server.update_attributes(server_params)
-    else
-      server = Server.new(server_params)
-    end
-
-    if server.save
-      render plain: server.server_key, layout: false, status: 202
+    if possible_server.update(server_params)
+      render plain: server.server_key, layout: false
     else
       head 422
     end
@@ -42,6 +33,10 @@ class ServersController < ApplicationController
       passworded: params[:pw].present?,
       users:      players_string
     }
+  end
+
+  def possible_server
+    @possible_server ||= Server.find_by(server_key: params[:key]) || Server.create(server_params)
   end
 
   def players_string

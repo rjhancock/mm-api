@@ -4,7 +4,6 @@
   <thead>
     <tr>
       <th>IP Address</th>
-      <th>Message</th>
       <th>MegaMek Version</th>
       <th>Current Phase</th>
       <th>Users Online</th>
@@ -19,7 +18,6 @@
           <%= "#{server.ip_address}:#{server.port}" %>
           <span class='fa <%= server.passworded ? 'fa-lock' : 'fa-unlock' %>' aria-hidden="true"</span>
         </td>
-        <td><%= server.motd %></td>
         <td><%= server.version %></td>
         <td><%= server.phase %></td>
         <td><%= server.users %></td>
