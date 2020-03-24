@@ -14,10 +14,6 @@ RSpec.describe RemoveOldServersJob, type: :job do
     expect { job }.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(1)
   end
 
-  it 'is in default queue' do
-    expect(RemoveOldServersJob.new.queue_name).to eq('default')
-  end
-
   it 'executes perform' do
     perform_enqueued_jobs { job }
     assert_performed_jobs 1

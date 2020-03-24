@@ -16,7 +16,7 @@ class ServersController < ApplicationController
   # POST /servers/announce
   def announce
     if possible_server.update(server_params)
-      render plain: server.server_key, layout: false
+      render plain: possible_server.server_key, layout: false
     else
       head 422
     end

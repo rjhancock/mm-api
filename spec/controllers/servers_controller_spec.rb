@@ -54,7 +54,7 @@ RSpec.describe ServersController, type: :controller do
     it "returns a success response" do
       Server.create! valid_attributes
       get :index, params: {}, session: valid_session
-      expect(response).to be_success
+      expect(response).to have_http_status(:success)
     end
   end
 
@@ -68,7 +68,7 @@ RSpec.describe ServersController, type: :controller do
 
       it "redirects to the created server" do
         post :announce, params: valid_attributes, session: valid_session
-        expect(response).to have_http_status(:accepted)
+        expect(response).to have_http_status(:success)
       end
 
       it "updates server with valid params" do
@@ -76,7 +76,7 @@ RSpec.describe ServersController, type: :controller do
         params = valid_attributes
         params[:key] = server.server_key
         post :announce, params: params, session: valid_session
-        expect(response).to have_http_status(:accepted)
+        expect(response).to have_http_status(:success)
       end
     end
 
