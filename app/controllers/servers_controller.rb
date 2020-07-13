@@ -20,6 +20,7 @@ class ServersController < ApplicationController
     if Server.exists?(server_key: key)
       server = Server.where(server_key: key).first
       server.update(server_params)
+      server.touch
     else
       server = Server.new(server_params)
     end
