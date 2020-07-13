@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
     <header class='container-fluid'>
       <div class='container'>
-        <%= link_to(image_tag('megamek_logo.png'), 'https://megamek.org') %>
+        <%= link_to(image_pack_tag('megamek_logo.png'), 'https://megamek.org') %>
         <ul class='nav nav-tabs'>
           <li><%= link_to 'API Home', root_url, class: 'nav-link' %></li>
           <li><%= link_to 'API Docs', docs_url, class: 'nav-link'  %></li>
