@@ -21,6 +21,13 @@ server {
   # additional config
   include snippets/general.conf;
 
+  access_log /var/log/nginx/{{ server_name }}-access.log;
+  error_log /var/log/nginx/{{ server_name }}-error.log;
+
+  location / {
+    try_files $uri @app;
+  }
+
   location / {
     client_max_body_size 0;
     gzip on;
