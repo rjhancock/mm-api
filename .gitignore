@@ -1,6 +1,5 @@
 *.rbc
 capybara-*.html
-.rspec
 /log
 /tmp
 /public/system
@@ -40,7 +39,7 @@ node_modules/
 config/database.yml
 /storage
 /exports
-/config/master.key
+master.key
 /public/packs
 /public/packs-test
 

@@ -1,40 +1,123 @@
-image: ruby:2.3
-
-services:
-  - redis:latest
-  - postgres:latest
+image: registry.tapenvy.us:443/open-source/megamekwebsite:latest
 
 cache:
   paths:
-    - vendor/ruby
+    - vendor/bundle
     - node_modules
 
+services:
+  - postgres:latest
+  - redis:latest
+
 variables:
-  POSTGRES_USER: runner
-  POSTGRES_PASSWORD: ""
-  POSTGRES_DB: MMApi_test
+  BUNDLE_PATH: vendor/bundle
+  DISABLE_SPRING: "1"
+  DB_HOST: postgres
+  POSTGRES_DB: "my_custom_db"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "postgres"
 
 before_script:
-  - curl -sL https://deb.nodesource.com/setup_6.x | bash -
-  - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-  - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-  - apt-get update -q && apt-get install nodejs yarn -yqq
-  - ruby -v
-  - node -v
-  - yarn -v
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
+  - echo $DEPLOY_MASTER_KEY > config/master.key
   - cp config/database.yml.gitlab config/database.yml
-  - cp config/secrets.yml.example config/secrets.yml
-  - cp config/initializers/devise.rb.example config/initializers/devise.rb
-  - gem install bundler  --no-ri --no-rdoc
-  - bundle install -j $(nproc) --path vendor
+  - bundle exec rails db:create RAILS_ENV=test
+  - bundle exec rails db:schema:load RAILS_ENV=test
 
-megamek:
+stages:
+  - build
+  - test
+  - quality
+  - deploy
+
+build:
+  stage: build
+  before_script:
+    - bundle check || bundle install --jobs $(nproc) && bundle clean --force
+    - yarn install
+  script:
+    - ruby -v
+    - node -v
+    - yarn -v
+
+tests:
   stage: test
   script:
-    - ./cc-test-reporter before-build
-    - bundle exec rails db:schema:load
-    - bundle exec rails yarn:install
     - bundle exec rspec
-    - ./cc-test-reporter after-build -t simplecov
+  artifacts:
+    paths:
+      - coverage/
+
+sast:
+  stage: quality
+  except:
+    - master
+  allow_failure: true
+  script:
+    - bundle exec brakeman -A -m
+
+fasterer:
+  stage: quality
+  except:
+    - master
+  allow_failure: true
+  script:
+    - bundle exec fasterer
+
+rails_best_practicies:
+  stage: quality
+  except:
+    - master
+  allow_failure: true
+  script:
+    - bundle exec rails_best_practices
+
+reek:
+  stage: quality
+  except:
+    - master
+  allow_failure: true
+  script:
+    - bundle exec reek
+
+rubocop:
+  stage: quality
+  except:
+    - master
+  allow_failure: true
+  script:
+    - bundle exec rubocop
+
+audit:
+  stage: test
+  except:
+    - master
+  script:
+    - bundle exec bundle-audit update
+    - bundle exec bundle-audit check
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  before_script:
+    - echo $DEPLOY_MASTER_KEY > ansible/templates/master.key
+  script:
+    - ansible-playbook ansible/app.yml
+  tags:
+    - deploy
+
+pages:
+  stage: deploy
+  dependencies:
+    - tests
+  before_script:
+    - echo 'No need to do anything'
+  script:
+    - rm -rf public
+    - mv coverage public
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+  only:
+    - master

@@ -1,9 +1,14 @@
-test:
+default: &default
   adapter: postgresql
   encoding: unicode
+  username: postgres
+  password: postgres
+  host: <%= ENV['DB_HOST'] %>
   pool: 5
-  timeout: 5000
-  host: postgres
-  username: runner
-  password: ""
-  database: MMApi_test
+  database: ci_db
+
+test:
+  <<: *default
+
+development:
+  <<: *default

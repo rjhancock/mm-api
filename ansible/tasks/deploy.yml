@@ -1,12 +1,17 @@
 ---
 
 - name: Remove Failed Deploy If Present
-  file: path={{ env_base_dir }}/releases/{{ latest_revision.stdout }} state=absent
+  file:
+    path: "{{ env_base_dir }}/releases/{{ latest_revision.stdout }}"
+    state: absent
 
 - name: Create Dirs
-  file: path={{item}} state=directory recurse=yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
   with_items:
-    - "{{ env_base_dir }}/releases/{{ latest_revision.stdout }}"
+    - "{{ releases_dir }}/{{ latest_revision.stdout }}"
     - "{{ shared_dir }}/pids"
     - "{{ shared_dir }}/log"
     - "{{ shared_dir }}/sockets"
@@ -15,69 +20,98 @@
     - "{{ bundle_dir }}"
 
 - name: Pull Code from Git
-  git: repo={{ git_clone_url }} dest={{ env_base_dir }}/releases/{{ latest_revision.stdout }} version={{ git_branch }}
+  git:
+    repo: "{{ git_clone_url }}"
+    dest: "{{ releases_dir }}/{{ latest_revision.stdout }}"
+    version: "{{ git_branch }}"
 
 - name: Create Log Direcotry
-  file: path={{ env_base_dir }}/releases/{{ latest_revision.stdout }}/log state=directory recurse=yes
+  file:
+    path: "{{ releases_dir }}/{{ latest_revision.stdout }}/log"
+    state: directory
+    recurse: yes
 
 - name: Copy Logrotate
-  template: src=templates/{{ item }}.j2 dest=/etc/logrotate.d/{{ item }} mode=0644
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "/etc/logrotate.d/{{ item }}"
+    mode: '0644'
   become: true
   with_items:
     - mm_api_logs
 
 - name: Copy SystemD files
-  template: src=templates/{{ item }}.j2 dest=/etc/systemd/system/{{ item }} mode=0644
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item }}"
+    mode: '0644'
   become: true
   with_items:
     - megamek_puma.service
 
 - name: Copy config files
-  template: src=templates/{{ item }}.j2 dest={{ conf_dir }}/{{item}} mode=0655
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ conf_dir }}/{{ item }}"
+    mode: '0644'
   with_items:
     - database.yml
     - puma.rb
-    - secrets.yml
 
 - name: Link config files
-  file: src={{ conf_dir }}/{{ item }} dest={{ env_base_dir }}/releases/{{ latest_revision.stdout }}/config/{{ item }} state=link
+  file:
+    src: "{{ conf_dir }}/{{ item }}"
+    dest: "{{ releases_dir }}/{{ latest_revision.stdout }}/config/{{ item }}"
+    state: link
   with_items:
     - database.yml
     - puma.rb
-    - secrets.yml
 
-- name: Copy initializer files
-  template: src=templates/{{ item }} dest={{ init_dir }}/{{item}} mode=0655
-  with_items:
-    - devise.rb
-    - smtp_settings.rb
+- name: Copy master.key
+  template:
+    src: master.key
+    dest: "{{ conf_dir }}/master.key"
+    mode: '0400'
 
-- name: Link config files
-  file: src={{ init_dir }}/{{ item }} dest={{ env_base_dir }}/releases/{{ latest_revision.stdout }}/config/initializers/{{ item }} state=link
-  with_items:
-    - devise.rb
-    - smtp_settings.rb
+- name: Link master.key
+  file:
+    src: "{{ conf_dir }}/master.key"
+    dest: "{{ releases_dir }}/{{ latest_revision.stdout }}/config/master.key"
+    state: link
 
 - name: Create .bundle dir
-  file: path={{ env_base_dir }}/releases/{{ latest_revision.stdout }}/.bundle state=directory recurse=yes
+  file:
+    path: "{{ releases_dir }}/{{ latest_revision.stdout }}/.bundle"
+    state: directory
+    recurse: yes
 
 - name: Install Bundled Gems
-  command: "{{ rvm_path }} bundle install --deployment --path {{ bundle_dir }} --without development test chdir={{ env_base_dir }}/releases/{{ latest_revision.stdout }}"
+  command: "{{ rvm_path }} bundle install --deployment --path {{ bundle_dir }} --without development test chdir={{ releases_dir }}/{{ latest_revision.stdout }}"
 
 - name: Migrate Database
-  shell: "cd {{ env_base_dir }}/releases/{{ latest_revision.stdout }} && {{ rvm_path }} bundle exec rails db:migrate RAILS_ENV={{ rails_env }}"
+  shell: "cd {{ releases_dir }}/{{ latest_revision.stdout }} && {{ rvm_path }} bundle exec rails db:migrate RAILS_ENV={{ rails_env }}"
 
 - name: Precompile Assets
-  shell: "cd {{ env_base_dir }}/releases/{{ latest_revision.stdout }} && {{ rvm_path }} bundle exec rails assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production"
+  shell: "cd {{ releases_dir }}/{{ latest_revision.stdout }} && {{ rvm_path }} bundle exec rails assets:clean yarn:install assets:precompile tmp:cache:clear RAILS_ENV=production"
 
 - name: Setup new crontab
-  shell: "cd {{ env_base_dir }}/releases/{{ latest_revision.stdout }} && {{ rvm_path }} bundle exec whenever --update-crontab {{ server_name }}_{{ rails_env }}"
+  shell: "cd {{ releases_dir }}/{{ latest_revision.stdout }} && {{ rvm_path }} bundle exec whenever --update-crontab {{ server_name }}_{{ rails_env }}"
 
 - name: Link this release to current
-  file: src={{ env_base_dir }}/releases/{{ latest_revision.stdout }} dest={{ env_base_dir }}/current state=link
+  file:
+    src: "{{ releases_dir }}/{{ latest_revision.stdout }}"
+    dest: "{{ env_base_dir }}/current"
+    state: link
+
+- name: Daemon Reload
+  shell: "systemctl daemon-reload"
+  become: true
 
 - name: Copy Nginx conf
-  template: src=templates/api.megamek.org.j2 dest=/etc/nginx/sites-available/api.megamek.org mode=0644
+  template:
+    src: templates/api.megamek.org.j2
+    dest: /etc/nginx/sites-available/api.megamek.org
+    mode: '0644'
   become: true
 
 - name: Start/Restart Puma Manager
@@ -87,9 +121,19 @@
   become: true
 
 - name: Enable Site config
-  file: src=/etc/nginx/sites-available/api.megamek.org dest=/etc/nginx/sites-enabled/api.megamek.org state=link
+  file:
+    src: /etc/nginx/sites-available/api.megamek.org
+    dest: /etc/nginx/sites-enabled/api.megamek.org
+    state: link
   become: true
   notify: reload nginx
+
+- name: Notify Mattermost
+  mattermost:
+    url: https://chat.tapenvy.us
+    api_key: nh8wci9wr3fyugpnwpciqo9sko
+    text: 'MM-API Site revision {{ latest_revision.stdout }} away!'
+    icon_url: https://megamek.org/assets/images/icons/megamek.png
 
 - name: Release cleanup
   shell: "cd {{ env_base_dir }}/releases && rm -rf `ls -t | tail -n +6`"

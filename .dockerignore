@@ -1,0 +1,7 @@
+/log/*
+/tmp/*
+/.git
+/.yarddoc
+/node_modules
+/ansible
+/storage/*
