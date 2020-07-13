@@ -46,8 +46,6 @@ class MechFactoryJob < ApplicationJob
       unit = Unit.find_or_create_by(title: title, unit_type: unit_type)
       next if unit.source_file_name.present? && File.exist?(unit.source_file_name)
 
-      Rails.logger.info "Navigating to: #{url}"
-
       browser.visit(url)
       frame = browser.find('iframe#mhmain')
 
@@ -58,9 +56,8 @@ class MechFactoryJob < ApplicationJob
         file_path = sanitize_file_path(title, base_path)
         File.write(file_path, data)
 
-        unit.update_attributes(source_file_name: file_path)
-        Rails.logger.info "Unit Saved: #{title}"
-        ParseUnit.perform_later(unit)
+        unit.update(source_file_name: file_path)
+        ParseUnitJob.perform_later(unit)
       end
     end
   end
