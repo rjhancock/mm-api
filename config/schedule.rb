@@ -13,7 +13,7 @@
 #   rake "some:great:rake:task"
 # end
 #
-every 30.minutes do
+every 5.minutes do
   runner "RemoveOldServersJob.perform_now"
  end
 

@@ -6,6 +6,6 @@ class RemoveOldServersJob < ApplicationJob
   queue_as :default
 
   def perform
-    Server.where("updated_at < :hour_ago", hour_ago: 1.hour.ago ).delete_all
+    Server.where("updated_at < :time", time: 5.minutes.ago ).delete_all
   end
 end
