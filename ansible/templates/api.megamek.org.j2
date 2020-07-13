@@ -28,7 +28,7 @@ server {
     try_files $uri @app;
   }
 
-  location / {
+  location @app {
     client_max_body_size 0;
     gzip on;
 

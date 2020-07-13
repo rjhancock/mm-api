@@ -68,7 +68,7 @@ RSpec.describe Api::V1::ServersController, type: :controller do
 
       it "redirects to the created server" do
         post :create, params: { server: valid_attributes }, session: valid_session
-        expect(response).to have_http_status(:ok)
+        expect(response).to have_http_status(:created)
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe Api::V1::ServersController, type: :controller do
         server = Server.create! valid_attributes
         put :update, params: {id: server.server_key, server: new_attributes}, session: valid_session
         server.reload
-        expect(response).to have_http_status(:ok)
+        expect(response).to have_http_status(:accepted)
       end
     end
 

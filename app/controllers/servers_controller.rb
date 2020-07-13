@@ -25,7 +25,7 @@ class ServersController < ApplicationController
     end
 
     if server.save
-      render plain: server.server_key, layout: false, status: 202
+      render plain: server.server_key, layout: false, status: :ok
     else
       head 422
     end

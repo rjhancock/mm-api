@@ -17,7 +17,7 @@ class Api::V1::ServersController < Api::ApiController
     server.ip_address = remote_ip
 
     if server.save
-      render json: server, status: :ok
+      render json: server, status: :created
     else
       render json: server.errors, status: :unprocessable_entity
     end
@@ -26,7 +26,7 @@ class Api::V1::ServersController < Api::ApiController
   # PATCH/PUT /servers/1.json
   def update
     if server.update(server_params)
-      head :ok
+      head :accepted
     else
       render json: server.errors, status: :unprocessable_entity
     end
