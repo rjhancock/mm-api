@@ -1,0 +1,278 @@
+/*
+ * Theme definitions
+ */
+
+@import "~bootstrap/scss/bootstrap.scss";
+
+$themes: (light: (backgroundColor: #dadfe1,
+    textColor: #000000,
+    accentColor1: #0000a0,
+    accentColor2: #800080,
+    activeColor: #00ffff,
+    cardColor: #adb5bd,
+  ),
+  dark: (backgroundColor: #282828, //#3f3e3e,
+    textColor: #dadfe1,
+    accentColor1: #fffacd,
+    accentColor2: #ffd700,
+    activeColor: #f89406,
+    cardColor: #343a40,
+  ),
+);
+
+/// Slightly lighten a color
+/// @access public
+/// @param {Color} $color - color to tint
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+/// Slightly darken a color
+/// @access public
+/// @param {Color} $color - color to shade
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+/*
+ * Implementation of themes
+ */
+@mixin themify($themes) {
+
+  @each $theme,
+  $map in $themes {
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+
+      @each $key,
+      $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function themed($key) {
+  @return map-get($theme-map, $key);
+}
+
+/*******************************************************/
+/* Variables                                           */
+/*******************************************************/
+
+//fonts
+$font-stack: "Source Sans Pro",
+Trebuchet MS,
+Arial,
+Helvetica,
+Verdana,
+sans-serif;
+
+/*******************************************************/
+/* Basics                                              */
+/*******************************************************/
+body,
+html {
+  height: 100%;
+}
+
+body {
+  background-image: url("../images/hexellence.png"), linear-gradient(#000000, #000000);
+  font-family: $font-stack;
+
+  padding-top: 60px;
+
+  @include themify($themes) {
+    color: themed('textColor');
+  }
+}
+
+h1,
+h2,
+h3 {
+  text-align: center;
+}
+
+blockquote {
+  margin: 20px;
+  padding: 20px;
+  font-family: Arial,
+    Helvetica Neue,
+    Helvetica,
+    sans-serif;
+  font-size: 20px;
+  color: #428bca;
+  border-left: 4px solid #428bca;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  border-right: 4px solid #428bca;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+a {
+  @include themify($themes) {
+    &:link {
+      color: themed('accentColor1');
+    }
+
+    &:visited {
+      color: themed('accentColor1');
+    }
+
+    &:hover {
+      color: themed('accentColor2');
+    }
+
+    &:active {
+      color: themed('activeColor');
+    }
+  }
+}
+
+/*******************************************************/
+/* For the banner image used at the top and the navbar */
+/*******************************************************/
+.banner-image {
+  background-image: url("../images/mhq_splash.jpeg");
+
+  /* Set a specific height */
+  height: 350px;
+  /* Position and center the image to scale nicely on all screens */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: 0;
+}
+
+/* Make the navbar semi-transparent */
+.navbar.transparent {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75));
+}
+
+.navbar a {
+  font-size: 1.1em;
+}
+
+/********************************/
+/** Adjustments to containers  **/
+/********************************/
+.container-fluid {
+  /* So that the banner image goes all the way to the edges */
+  padding: 0;
+}
+
+.container {
+  padding: 15px;
+}
+
+.container.footer {
+  padding-top: 0;
+  color: #dadfe1;
+}
+
+/* Custom top level container for the body */
+.container.top {
+  border-radius: 25px;
+  margin-top: 10px;
+
+  @include themify($themes) {
+    color: themed('textColor');
+    background-color: themed('backgroundColor');
+  }
+}
+
+/****************************************************/
+/* Override default lists to use Font Awesome icons */
+/****************************************************/
+ul {
+  list-style-type: none;
+
+  li:before {
+    font-family: 'FontAwesome';
+    content: '\f05b';
+    margin: 0 5px 0 -20px;
+
+    @include themify($themes) {
+      color: themed('textColor');
+    }
+  }
+
+  li.news:before {
+    font-family: 'FontAwesome';
+    content: '\f1ea';
+    margin: 0 5px 0 -20px;
+
+    @include themify($themes) {
+      color: themed('textColor');
+    }
+  }
+}
+
+/*********************************************************************/
+/* posts                                                             */
+/*********************************************************************/
+div.post-meta {
+  border-width: 1px 0;
+  border-color: #666666;
+  border-style: solid;
+  margin: 0 0 20px;
+
+  ul {
+    display: inline;
+    padding-left: 0;
+  }
+
+  ul>li {
+    display: inline;
+    padding: 0 0 5px 20px;
+  }
+
+  li:before {
+    content: '';
+    margin: 0 5px 0 0;
+  }
+
+  .post-time {
+    display: inline;
+  }
+}
+
+/*********************************************************************/
+/* boostrap cards                                                    */
+/*********************************************************************/
+
+.dl-card {
+  @include themify($themes) {
+    background-color: themed('cardColor');
+    color: themed('textColor');
+  }
+}
+
+/*********************************************************************/
+/* Code formatting                                                  */
+/*********************************************************************/
+pre {
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  overflow-x: auto;
+  padding: 8px 12px;
+}
+
+code.highlighter-rouge {
+  border-radius: 5px;
+  padding: 0;
+
+  @include themify($themes) {
+    color: themed('accentColor2');
+    font-weight: 600;
+  }
+}
