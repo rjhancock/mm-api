@@ -19,7 +19,7 @@ class ServersController < ApplicationController
 
     if Server.exists?(server_key: key)
       server = Server.where(server_key: key).first
-      server.update_attributes(server_params)
+      server.update(server_params)
     else
       server = Server.new(server_params)
     end
