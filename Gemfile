@@ -11,6 +11,7 @@ ruby '~> 2.7.0'
 
 gem 'rails', '~> 6.0.0'
 
+gem 'airbrake'
 gem 'bootsnap'
 gem 'devise'
 gem 'hiredis'
