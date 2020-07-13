@@ -1,0 +1,1 @@
+CREDS = Rails.application.credentials

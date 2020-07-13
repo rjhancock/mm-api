@@ -15,7 +15,7 @@ RSpec.describe RemoveOldServersJob, type: :job do
   end
 
   it 'is in default queue' do
-    expect(RemoveOldServersJob.new.queue_name).to eq('default')
+    expect(RemoveOldServersJob.new.queue_name).to eq('megamek_api_test_default')
   end
 
   it 'executes perform' do

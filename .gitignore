@@ -1,6 +1,5 @@
 *.rbc
 capybara-*.html
-.rspec
 /log
 /tmp
 /public/system
@@ -37,13 +36,17 @@ bower.json
 # Ignore node_modules
 node_modules/
 
-ansible/templates/devise.rb
-ansible/templates/smtp_settings.rb
 config/database.yml
-config/initializers/devise.rb
-config/puma.rb
-config/secrets.yml
-public/assets
 /storage
 /exports
-/config/master.key
+master.key
+/public/packs
+/public/packs-test
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+.DS_Store

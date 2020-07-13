@@ -7,36 +7,45 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '~> 2.3.4'
+ruby '~> 2.7.0'
 
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 6.0.0'
 
+gem 'airbrake'
 gem 'bootsnap'
-gem 'coffee-rails', '~> 4.2'
 gem 'devise'
 gem 'hiredis'
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder'
 gem 'kaminari'
-gem 'pg', '~> 1.0'
-gem 'puma', '~> 3.7'
+gem 'pg'
+gem 'puma'
 gem 'rack-cors', require: 'rack/cors'
-gem 'sass', '~> 3.5'
+gem 'sassc'
 gem 'sidekiq'
-gem 'turbolinks', '~> 5'
-gem 'uglifier', '>= 1.3.0'
+gem 'webpacker'
 gem 'whenever'
 
 group :development, :test do
-  gem 'capybara', '~> 2.13'
-  gem 'rspec-rails'
+  gem 'capybara'
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
+
+    # Testing libraries
+  gem 'brakeman', require: false
+  gem 'bundler-audit', require: false
+  gem 'fasterer', require: false
+  gem 'rails_best_practices', require: false
+  gem 'reek', require: false
+  gem 'rspec-rails'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
 end
 
 group :development do
   gem 'annotate'
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen'
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'web-console', '>= 3.3.0'
+  gem 'spring-watcher-listen'
+  gem 'web-console'
 end

@@ -7,5 +7,4 @@ db_name: "mm-api_production"
 server_name: "api.megamek.org"
 rails_env: "production"
 app_name: 'megamek_api'
-ruby_version: 'ruby-2.3.4'
-secrets_key: 'a79afc61c0aa7bf5f7308be896903f2b472a7be5fcd98a1726311632a6e802072178f0de29b4e031093ceede2ce2aa82f4f43d22123521d59086497e61b0891b'
+ruby_version: 'ruby-2.7.0'

@@ -13,25 +13,16 @@
     conf_dir: "{{ shared_dir }}/conf"
     init_dir: "{{ conf_dir }}/initializers"
     bundle_dir: "{{ shared_dir }}/bundle"
-    ruby_version: "ruby-2.3"
+    releases_dir: "{{ env_base_dir }}/releases"
     rvm_path: "/usr/local/rvm/bin/rvm {{ ruby_version }} exec"
 
   tasks:
-  - name: Install build tools
-    apt: pkg=build-essential state=present update_cache=yes
-    become: true
-
-  - name: Install Git
-    apt: pkg=git-core state=present
-    become: true
-
   - name: Install dependencies
-    apt: pkg={{ item }} state=present
-    with_items:
-      - libxml2-dev
-      - libxslt1-dev
-      - nodejs
-      - yarn
+    apt:
+      pkg: ['build-essential', 'git-core', 'libxml2-dev', 'libxslt1-dev','nodejs', 'yarn']
+      state: present
+      update_cache: yes
+      install_recommends: no
     become: true
 
   - name: Install CA Certs
