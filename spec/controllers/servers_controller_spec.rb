@@ -54,7 +54,7 @@ RSpec.describe ServersController, type: :controller do
     it "returns a success response" do
       Server.create! valid_attributes
       get :index, params: {}, session: valid_session
-      expect(response).to be_success
+      expect(response).to have_http_status(:ok)
     end
   end
 

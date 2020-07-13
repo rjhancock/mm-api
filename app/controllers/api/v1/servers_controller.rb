@@ -17,7 +17,7 @@ class Api::V1::ServersController < Api::ApiController
     server.ip_address = remote_ip
 
     if server.save
-      render json: server, status: :created
+      render json: server, status: :ok
     else
       render json: server.errors, status: :unprocessable_entity
     end
