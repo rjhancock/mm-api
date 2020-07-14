@@ -1,0 +1,28 @@
+<h1 class='page-header'>Currently Registered Servers</h1>
+
+<table class='table table-striped'>
+  <thead>
+    <tr>
+      <th>IP Address</th>
+      <th>MegaMek Version</th>
+      <th>Current Phase</th>
+      <th>Users Online</th>
+      <th>Last Update</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% servers.each do |server| %>
+      <tr>
+        <td>
+          <span class='fa <%= server.passworded ? 'fa-lock' : 'fa-unlock' %>' aria-hidden="true"</span>
+          <%= "#{server.ip_address}:#{server.port}" %>
+        </td>
+        <td><%= server.version %></td>
+        <td><%= server.phase %></td>
+        <td><%= server.users %></td>
+        <td><%= server.updated_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

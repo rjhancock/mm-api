@@ -1,32 +1,5 @@
-<h1 class='page-header'>Currently Registered Servers</h1>
+<div id='servers'>
+  <%= render partial: 'servers', locals: { servers: servers } %>
+</div>
 
-<table class='table table-striped'>
-  <thead>
-    <tr>
-      <th>IP Address</th>
-      <th>Message</th>
-      <th>MegaMek Version</th>
-      <th>Current Phase</th>
-      <th>Users Online</th>
-      <th>Last Update</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% servers.each do |server| %>
-      <tr>
-        <td>
-          <%= "#{server.ip_address}:#{server.port}" %>
-          <span class='fa <%= server.passworded ? 'fa-lock' : 'fa-unlock' %>' aria-hidden="true"</span>
-        </td>
-        <td><%= server.motd %></td>
-        <td><%= server.version %></td>
-        <td><%= server.phase %></td>
-        <td><%= server.users %></td>
-        <td><%= server.updated_at %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
+<%= javascript_pack_tag 'servers' %>
