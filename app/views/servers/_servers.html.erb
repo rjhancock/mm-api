@@ -15,7 +15,7 @@
     <% servers.each do |server| %>
       <tr>
         <td>
-          <span class='fa <%= server.passworded ? 'fa-lock' : 'fa-unlock' %>' aria-hidden="true"</span>
+          <span class='fa <%= server.passworded ? 'fa-lock' : 'fa-unlock' %>' aria-hidden="true"></span>
           <%= "#{server.ip_address}:#{server.port}" %>
         </td>
         <td><%= server.version %></td>
