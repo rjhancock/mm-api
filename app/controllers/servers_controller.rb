@@ -13,7 +13,7 @@ class ServersController < ApplicationController
   def index
     respond_to do |format|
       format.html { render locals: { servers: Server.all } }
-      format.js   { render partial: 'servers', locals: { servers: Server.all } }
+      format.js   { render partial: 'servers', layout: false, locals: { servers: Server.all } }
     end
   end
 

@@ -7,7 +7,7 @@ function loadXMLDoc() {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
     document.getElementById("servers").innerHTML = xmlhttp.responseText;
     }
-  }
+  };
 
   xmlhttp.open("GET" ,"/servers.js", true);
   xmlhttp.send();
