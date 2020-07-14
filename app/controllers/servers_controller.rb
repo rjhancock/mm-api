@@ -7,10 +7,14 @@ class ServersController < ApplicationController
   include Trackable
 
   skip_before_action :verify_authenticity_token, only: :announce
+  skip_before_action :verify_authenticity_token, only: :index, format: :js
 
   # GET /servers
   def index
-    render locals: { servers: Server.all }
+    respond_to do |format|
+      format.html { render locals: { servers: Server.all } }
+      format.js   { render partial: 'servers', locals: { servers: Server.all } }
+    end
   end
 
   # POST /servers/announce

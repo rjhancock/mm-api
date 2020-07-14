@@ -25,10 +25,10 @@ class Api::V1::ServersController < Api::ApiController
 
   # PATCH/PUT /servers/1.json
   def update
-    if server.update(server_params)
+    if server && server.update(server_params)
       head :accepted
     else
-      render json: server.errors, status: :unprocessable_entity
+      head :unprocessable_entity
     end
   end
 
@@ -41,7 +41,7 @@ class Api::V1::ServersController < Api::ApiController
   private
 
   def server
-    @server ||= Server.where(server_key: params[:id]).first
+    @server ||= Server.find_by(server_key: params[:id])
   end
 
   def server_params
