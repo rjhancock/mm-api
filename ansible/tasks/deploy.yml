@@ -49,6 +49,11 @@
   with_items:
     - megamek_puma.service
 
+- name: Remove Puma.rb If Present
+  file:
+    path: "{{ env_base_dir }}/releases/{{ latest_revision.stdout }}/config/puma.rb"
+    state: absent
+
 - name: Copy config files
   template:
     src: "templates/{{ item }}.j2"
