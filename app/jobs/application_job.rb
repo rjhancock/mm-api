@@ -5,9 +5,7 @@ require 'open-uri'
 # Base class for ActiveJob
 class ApplicationJob < ActiveJob::Base
   def fix_url(link)
-    url = link['href']
-    url = "https://isatlas.teamspam.net#{url}" unless !!(url =~ /^http/)
-    url
+    URI.jopin('https://isatlas.teamspam.net', link['href']).to_s
   end
 
   def text_to_date(date)
