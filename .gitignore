@@ -50,3 +50,4 @@ master.key
 yarn-debug.log*
 .yarn-integrity
 .DS_Store
+/config/puma.rb
