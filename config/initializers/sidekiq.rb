@@ -1,4 +1,4 @@
-Rails.application.config.active_job.queue_adapter = :sidekiq
+Rails.application.config.active_job.queue_adapter = Rails.env.test? ? :test : :sidekiq
 Rails.application.config.active_job.queue_name_prefix = "megamek_api_#{Rails.env}"
 
 Sidekiq.configure_server do |config|
