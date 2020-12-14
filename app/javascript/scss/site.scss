@@ -2,7 +2,10 @@
  * Theme definitions
  */
 
-@import "~bootstrap/scss/bootstrap.scss";
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+@import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "@fortawesome/fontawesome-free/scss/solid.scss";
+@import "@fortawesome/fontawesome-free/scss/regular.scss";
 
 $themes: (light: (backgroundColor: #dadfe1,
     textColor: #000000,
@@ -151,6 +154,7 @@ a {
   background-repeat: no-repeat;
   background-size: cover;
   position: 0;
+  border-radius: 25px;
 }
 
 /* Make the navbar semi-transparent */
@@ -168,10 +172,6 @@ a {
 .container-fluid {
   /* So that the banner image goes all the way to the edges */
   padding: 0;
-}
-
-.container {
-  padding: 15px;
 }
 
 .container.footer {
@@ -197,7 +197,7 @@ ul {
   list-style-type: none;
 
   li:before {
-    font-family: 'FontAwesome';
+    font-family: 'Font Awesome 5 Free';
     content: '\f05b';
     margin: 0 5px 0 -20px;
 
@@ -207,7 +207,7 @@ ul {
   }
 
   li.news:before {
-    font-family: 'FontAwesome';
+    font-family: 'Font Awesome 5 Free';
     content: '\f1ea';
     margin: 0 5px 0 -20px;
 
