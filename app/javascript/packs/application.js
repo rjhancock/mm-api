@@ -16,8 +16,6 @@
 
 require("@rails/ujs").start();
 
-import '@fortawesome/fontawesome-free/js/all';
-
 import 'scss/site';
 import 'js/site';
 
