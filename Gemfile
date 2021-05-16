@@ -22,7 +22,7 @@ gem 'puma'
 gem 'rack-cors', require: 'rack/cors'
 gem 'sassc'
 gem 'sidekiq'
-gem 'spring'
+# gem 'spring'
 gem 'webpacker'
 gem 'whenever'
 
@@ -46,6 +46,7 @@ end
 group :development do
   gem 'annotate'
   gem 'listen'
+  gem 'spring'
   gem 'spring-watcher-listen'
   gem 'web-console'
 end
